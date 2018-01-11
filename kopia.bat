@@ -1,21 +1,16 @@
-rem @echo off
-cls
-mkdir C:\userkopia
-echo Skrypt synchronizujacy
-echo.
-echo --- Kopiowanie dokumentow ---
-robocopy %USERPROFILE%\Documents C:\userkopia\%username%\Documents\ /E /MIR /XJ /njh /njs /dcopy:t /ndl
-echo.
-echo --- Kopiowanie zawartosci pulpitu ---
-robocopy %USERPROFILE%\Desktop C:\userkopia\%username%\Desktop\ /E /MIR /XJ /njh /njs /dcopy:t /ndl
-echo.
-echo --- Kopiowanie zakonczone ---
+@echo off
+mkdir d:\userkopia
+mkdir d:\Backup
+robocopy %USERPROFILE%\Documents d:\userkopia\%username%\Documents\ /E /MIR /XJ /njh /njs /dcopy:t /ndl
+robocopy %USERPROFILE%\Desktop d:\userkopia\%username%\Desktop\ /E /MIR /XJ /njh /njs /dcopy:t /ndl
+
+"C:\Program Files\7-Zip\7z.exe" a -tzip "d:\Backup\%username%_%DATE:~-4%_%DATE:~4,2%_%DATE:~7,2%.zip" d:\userkopia
 
 pause
-"C:\Program Files\7-Zip\7z.exe" a c:\Backup\%date%.zip c:\userkopia
-rem set PATH=%PATH%;%PROGRAMFILES%\7-zip
+rmdir /s /q d:\userkopia
 pause
-rmdir /s /q C:\userkopia
-
+del /f /s /q %USERPROFILE%\Documents\
+del /f /s /q %USERPROFILE%\Desktop\
 pause
-rem echo on
+robocopy d:\Backup\ \\192.168.66.200\kopia$\%computername%\ /mir
+pause
