@@ -1,0 +1,1 @@
+for /F %%l IN (lista_komputerow.txt) Do robocopy \\%%l\zadanie\zadanie d:\zadanie\%%l\  /mir 

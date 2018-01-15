@@ -1,0 +1,1 @@
+for / f "eol=" %l IN (lista_komputerow.txt) DO ping %l -n 2

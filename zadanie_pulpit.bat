@@ -1,0 +1,1 @@
+net share zadanie=c:\users\%username%\Desktop
