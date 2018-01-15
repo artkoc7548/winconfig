@@ -1,0 +1,30 @@
+$userDN = dsquery user -samid $args[0]
+$userLDAP = ([ADSI]("LDAP://"+ $userDN.Substring(1,($userDN.Length -2))))
+$lastPWD = $userLDAP.InvokeGet("PasswordLastChanged")
+$current = Get-Date
+$daysfromchange = [int](((Get-Date) - [datetime]$lastPWD).Totaldays)
+#poniżej musimy zmienić 90 na inną liczbę odpowiadającą
+#za okres ważności hasła
+$daystochange = 90 - $daysfromchange
+Write-Host "User: " $args[0]
+Write-Host "LastPasswordChange: " $lastPWD
+Write-Host "CurrentDate: " $current
+Write-Host "DaysFromChange: " $daysfromchange
+Write-Host "DaysToChange: " $daystochange
+
+
+Zapisujemy skrypt jako np. lastPWD.ps1.
+
+
+Użycie skryptu:
+
+PS C:\> ./lastPWD.ps1 login_użytkownika
+
+Oto bardzo prosty skrypt, który pozwoli Wam za pomocą powershell ściągnąć plik z internetu po protokole http.
+Myślę, że użyte zmienne i składnia polecenia są na tyle zrozumiałe, że nie trzeba ich szerzej omawiać :).
+
+
+$adres_url = „http://www.tajemniczastronainternetowa.ru/tajne/raport_grudzien_2015.pdf”
+$zapisz_jako = „c:\temp\raport_grudzien_2015.pdf”
+$webclient = New-Object System.Net.WebClient
+$webclient.DownloadFile($adres_url,$zaplisz_jako)
