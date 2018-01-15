@@ -1,0 +1,1 @@
+robocopy \\192.168.66.200\virtualbox$ d:\vb /mir
