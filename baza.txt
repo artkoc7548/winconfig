@@ -1,0 +1,62 @@
+[PHP/MySQL] Jak połączyć się z serwerem i bazą danych MySQL?
+Krzysztof Szypulski - Sobota, 10 września 2005 13:02:25
+Sprawa jest bardzo prosta. Poniżej przykład:
+
+PRZYKŁAD
+<?php 
+// nawiazujemy polaczenie 
+$connection = @mysql_connect('localhost', 'uzytkownik', 'haslo') 
+// w przypadku niepowodznie wyświetlamy komunikat 
+or die('Brak połączenia z serwerem MySQL.<br />Błąd: '.mysql_error()); 
+// połączenie nawiązane ;-) 
+echo "Udało się połączyć z serwerem!<br />"; 
+// nawiązujemy połączenie z bazą danych 
+$db = @mysql_select_db('nazwa_bazy', $connection) 
+// w przypadku niepowodzenia wyświetlamy komunikat 
+or die('Nie mogę połączyć się z bazą danych<br />Błąd: '.mysql_error()); 
+// połączenie nawiązane ;-) 
+echo "Udało się połączyć z bazą dancych!"; 
+// zamykamy połączenie 
+mysql_close($connection); 
+
+?>
+Zamknięcie połączenia za pomocą funkcji mysql_close() nie jest konieczne, ponieważ połączenie i tak zostanie zamknięte z chwilą zakończenia działania skryptu.
+
+Poniżej przedstawię Wam funkcję, której ja używam w codziennej pracy z bazą danych MySQL.
+
+PRZYKŁAD
+<?php 
+/****************************************************** 
+* connection.php 
+* konfiguracja połączenia z bazą danych 
+******************************************************/ 
+
+function connection() { 
+    // serwer 
+    $mysql_server = "localhost"; 
+    // admin 
+    $mysql_admin = "uzytkownik"; 
+    // hasło 
+    $mysql_pass = "haslo"; 
+    // nazwa baza 
+    $mysql_db = "baza_danych"; 
+    // nawiązujemy połączenie z serwerem MySQL 
+    @mysql_connect($mysql_server, $mysql_admin, $mysql_pass) 
+    or die('Brak połączenia z serwerem MySQL.'); 
+    // łączymy się z bazą danych 
+    @mysql_select_db($mysql_db) 
+    or die('Błąd wyboru bazy danych.'); 
+} 
+
+?>
+
+Potem wystarczy taki plik podłączyć za pomocą instrukcji require() i wywołać funkcję connection(), aby mieć aktywne połączenie do serwera i bazy danych.
+
+PRZYKŁAD
+<?php 
+// podłączamy plik  connection.php 
+require "connection.php"; 
+// wywołujemy funkcję connection() 
+connection(); 
+
+?>
